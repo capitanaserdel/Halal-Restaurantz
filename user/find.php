@@ -71,7 +71,7 @@
 <body class="bg-white text-gray-600 work-sans leading-normal text-base tracking-normal">
 <nav class="bg-white dark:bg-gray-900 fixed w-full pt-8 lg:pt-0 z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="/index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
+    <a href="/index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
         <svg class="h-6 lg:h-4 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
         <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
             <img src="../assets/logo.png" class="h-10" alt="Halal Restaurantz Logo">
@@ -136,7 +136,7 @@
             </div>
         </nav> 
         <div class="w-1/2 md:w-1/3  xl:w-1/4 p-6 flex flex-col">
-            <a href="/UserPanel/restaurants.html">
+            <a href="/user/restaurants.php">
                 <img class="hover:grow hover:shadow-lg lg:h-58 w-full rounded-md" src="../assets/cr.jpeg">
                 <div class="pt-3 flex items-center justify-between">
                     <p class="">Chicken Republic</p>
@@ -163,7 +163,7 @@
                 </a>
         </div> 
         <div class="w-1/2 md:w-1/3  xl:w-1/4 p-6 flex flex-col">
-            <a href="/UserPanel/restaurants.html">
+            <a href="/user/restaurants.php">
                 <img class="hover:grow hover:shadow-lg lg:h-58 w-full rounded-md" src="../assets/cr.jpeg">
                 <div class="pt-3 flex items-center justify-between">
                     <p class="">Chicken Republic</p>
