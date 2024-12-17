@@ -1,3 +1,7 @@
+<?php
+session_start();
+include "config.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,67 +119,47 @@
     </form>
     <div class="carousel relative lg:max-w-7xl max-w-sm mx-auto container mx-auto">
         <div class="carousel-inner relative overflow-hidden w-full">
-            <!--Slide 1-->
-            <input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="true" hidden="" checked="checked">
+            <?php
+                $product = "SELECT * FROM ads ORDER BY ID DESC ";
+                $result = $conn->query($product);
+                if ($result->num_rows > 0) {
+                    $first = true; // To set the first item as checked
+                    while($row = $result->fetch_assoc()) {
+                        $name = $row["name"];
+                        $description = $row["descriptions"];
+                        $image = $row["img"];
+            ?>
+            <!--Slide-->
+            <input class="carousel-open" type="radio" id="carousel-<?php echo $row['id']; ?>" name="carousel" aria-hidden="true" hidden="" <?php echo $first ? 'checked="checked"' : ''; ?>>
             <div class="carousel-item absolute opacity-0 lg:h-32 h-32">
-                    <div class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-bottom" style="background-image: url('https://www.pressurecookrecipes.com/wp-content/uploads/2022/06/instant-pot-spaghetti-and-meatballs.jpg');">
-    
-                    <div class="container mt-44 lg:mt-0 mx-auto">
-                    <div class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
-                        <p class="text-white bg-orange-500 p-1 rounded-md text-2xl my-4">Spaghetti and meatballs</p>
-                    </div>
-                    </div>
-    
-                </div>
-            </div>
-            <label for="carousel-3" class="prev control-1 w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden text-3xl font-bold text-orange-500 hover:text-white rounded-full bg-white hover:bg-red-400 leading-tight text-center z-10 inset-y-0 left-0 my-auto">‹</label>
-            <label for="carousel-2" class="next control-1 w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden text-3xl font-bold text-orange-500 hover:text-white rounded-full bg-white hover:bg-red-400 leading-tight text-center z-10 inset-y-0 right-0 my-auto">›</label>
-    
-            <!--Slide 2-->
-            <input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
-            <div class="carousel-item absolute opacity-0 bg-cover bg-right lg:h-32 h-32">
-                <div class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-right" style="background-image: url('https://cheflolaskitchen.com/wp-content/uploads/2018/06/Egusi-soup-Recipe-2.jpg');">
-    
+                <div class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-bottom" style="background-image: url('./admin/ads/<?php echo $image; ?>');">
                     <div class="container mt-44 lg:mt-0 mx-auto">
                         <div class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
-                            <p class="text-white bg-orange-500 p-1 rounded-md text-2xl my-4">Fufu and Egusi Soup</p>
+                            <p class="text-white bg-orange-500 p-1 rounded-md text-2xl my-4"><?php echo $name; ?></p>
                         </div>
                     </div>
-    
                 </div>
             </div>
-            <label for="carousel-1" class="prev control-2 w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-red-400  leading-tight text-center z-10 inset-y-0 left-0 my-auto">‹</label>
-            <label for="carousel-3" class="next control-2 w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-red-400  leading-tight text-center z-10 inset-y-0 right-0 my-auto">›</label>
-    
-            <!--Slide 3-->
-            <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
-            <div class="carousel-item absolute opacity-0 lg:h-32 h-32">
-                <div class="block h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-right" style="background-image: url('https://www.bellanaija.com/wp-content/uploads/2023/09/6FAC93B2-0490-4386-8390-58732B6277B2.png');">
-    
-                    <div class="container mt-44 lg:mt-0 mx-auto">
-                        <div class="flex flex-col w-full lg:w-1/2 md:ml-16 items-center md:items-start px-6 tracking-wide">
-                            <p class="text-white bg-orange-500 p-1 rounded-md text-2xl my-4">Fried Rice and Chicken</p>
-                        </div>
-                    </div>
-    
-                </div>
-            </div>
-            <label for="carousel-2" class="prev control-3 w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-red-400  leading-tight text-center z-10 inset-y-0 left-0 my-auto">‹</label>
-            <label for="carousel-1" class="next control-3 w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-red-400 leading-tight text-center z-10 inset-y-0 right-0 my-auto">›</label>
-    
+            <label for="carousel-<?php echo $row['id']; ?>" class="prev control-<?php echo $row['id']; ?> w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden text-3xl font-bold text-orange-500 hover:text-white rounded-full bg-white hover:bg-red-400 leading-tight text-center z-10 inset-y-0 left-0 my-auto">‹</label>
+            <label for="carousel-<?php echo $row['id']; ?>" class="next control-<?php echo $row['id']; ?> w-10 h-10 mr-2 md:mr-10 absolute cursor-pointer hidden text-3xl font-bold text-orange-500 hover:text-white rounded-full bg-white hover:bg-red-400 leading-tight text-center z-10 inset-y-0 right-0 my-auto">›</label>
+            <?php
+                        $first = false; // Set to false after the first iteration
+                    }
+                }
+            ?>
             <!-- Add additional indicators for each slide-->
             <ol class="carousel-indicators">
+                <?php
+                    $result->data_seek(0); // Reset result pointer
+                    while($row = $result->fetch_assoc()) {
+                ?>
                 <li class="inline-block mr-3">
-                    <label for="carousel-1" class="carousel-bullet cursor-pointer block text-4xl text-white hover:text-red-400">•</label>
+                    <label for="carousel-<?php echo $row['id']; ?>" class="carousel-bullet cursor-pointer block text-4xl text-white hover:text-red-400">•</label>
                 </li>
-                <li class="inline-block mr-3">
-                    <label for="carousel-2" class="carousel-bullet cursor-pointer block text-4xl text-white hover:text-red-400">•</label>
-                </li>
-                <li class="inline-block mr-3">
-                    <label for="carousel-3" class="carousel-bullet cursor-pointer block text-4xl text-white hover:text-red-400">•</label>
-                </li>
+                <?php
+                    }
+                ?>
             </ol>
-    
         </div>
     </div>
     <div class="w-full justify-center lg:max-w-7xl max-w-sm mx-auto flex items-center flex-wrap pt-4 pb-12">   
@@ -228,55 +212,34 @@
         Foods Cuisines
     </a>
         </div>
-    </nav> 
+    </nav>
+    <?php
+        $product = "SELECT * FROM products ORDER BY ID DESC ";
+        $result = $conn->query($product);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $food = $row["id"];
+                $name = $row["name"];
+                $price = $row["price"];
+                $description = $row["descriptions"];
+                $image = $row["image"];
+    ?>
     <div class="w-1/4 md:w-1/3  xl:w-1/4 p-6 flex flex-col">
-        <a href="/user/details.php">
-            <img class="hover:grow hover:shadow-lg  lg:h-44 h-22 w-full rounded-md" src="./assets/up.jpg">
+        <a href="./user/details.php?food=<?php echo base64_encode($food); ?>">
+            <img class="hover:grow hover:shadow-lg  lg:h-44 h-22 w-full rounded-md" src="./user/products/<?php echo $image ?>">
             <div class="pt-3 flex items-center justify-between">
-                <p class="">Food Here</p>
+                <p class=""><?php echo $name ?></p>
             <div class="inline-flex">
             
             </div>
             </div>
-            <p class="pt-1 font-bold text-orange-500">&#8358;3,000</p>
+            <p class="pt-1 font-bold text-orange-500">&#8358;<?php echo $price ?></p>
         </a>
-    </div> 
-    <div class="w-1/4 md:w-1/3  xl:w-1/4 p-6 flex flex-col">
-        <a href="/user/details.php">
-            <img class="hover:grow hover:shadow-lg  lg:h-44 h-22 w-full rounded-md" src="./assets/up.jpg">
-            <div class="pt-3 flex items-center justify-between">
-                <p class="">Food Here</p>
-            <div class="inline-flex">
-            
-            </div>
-            </div>
-            <p class="pt-1 font-bold text-orange-500">&#8358;3,000</p>
-        </a>
-    </div> 
-    <div class="w-1/4 md:w-1/3  xl:w-1/4 p-6 flex flex-col">
-        <a href="/user/details.php">
-            <img class="hover:grow hover:shadow-lg  lg:h-44 h-22 w-full rounded-md" src="./assets/up.jpg">
-            <div class="pt-3 flex items-center justify-between">
-                <p class="">Food Here</p>
-            <div class="inline-flex">
-            
-            </div>
-            </div>
-            <p class="pt-1 font-bold text-orange-500">&#8358;3,000</p>
-        </a>
-    </div> 
-    <div class="w-1/4 md:w-1/3  xl:w-1/4 p-6 flex flex-col">
-        <a href="/user/details.php">
-            <img class="hover:grow hover:shadow-lg  lg:h-44 h-22 w-full rounded-md" src="./assets/up.jpg">
-            <div class="pt-3 flex items-center justify-between">
-                <p class="">Food Here</p>
-            <div class="inline-flex">
-            
-            </div>
-            </div>
-            <p class="pt-1 font-bold text-orange-500">&#8358;3,000</p>
-        </a>
-    </div> 
+    </div>
+    <?php
+            }
+        }
+    ?>
 </div>
 </section>
 <footer class="container mx-auto bg-white py-8 border-t border-gray-400">
@@ -320,6 +283,16 @@
     </div>
   </div>
 </footer>
+
+<script>
+    // Automatically change the carousel every 2 seconds
+    let currentIndex = -1; // Start at -1 to show the first image on the first interval
+    const totalSlides = <?php echo $result->num_rows; ?>; // Total number of slides
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalSlides; // Loop back to the first slide
+        document.getElementById(`carousel-${currentIndex + 1}`).checked = true; // Check the next slide
+    }, 2000); // Change every 2000 milliseconds (2 seconds)
+</script>
 
 </body>
 

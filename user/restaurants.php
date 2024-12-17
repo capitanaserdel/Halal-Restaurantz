@@ -1,3 +1,21 @@
+<?php
+session_start();
+include "../config.php";
+
+if (isset($_GET['restaurant'])) {
+    $resid = base64_decode($_GET['restaurant']);
+
+    $product = "SELECT * FROM restaurants WHERE id = '$resid' ";
+        $result = $conn->query($product);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $name = $row["name"];
+                $image1 = $row["img1"];
+        }
+    }
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +37,7 @@
 <body class="bg-orange-50">
     <nav class="bg-orange-50 dark:bg-gray-900 fixed w-full pt-8 lg:pt-0 z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="../index.php" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="./find.php" class="flex items-center space-x-3 rtl:space-x-reverse">
             <svg class="h-8 lg:h-4 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
             <img src="../assets/logo.png" class="h-10" alt="Halal Restaurantz Logo">
             <div class="items-center justify-between w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
@@ -35,7 +53,7 @@
 <div class="bg-grey-200 flex  mt-16 lg:w-full h-screen flex-col lg:flex-row justify-center  h-screen">
     <!-- Left: Image -->
 <div class="lg:w-1/2 h-screen ">
-  <img src="../assets/cr.jpeg" alt="Placeholder Image" class="object-fit w-full h-full">
+  <img src="./restaurants/<?php echo $image1 ?>" alt="Placeholder Image" class="object-fit w-full h-full">
 </div>
 <!-- Right: Login Form -->
 <div class= " w-full border border-3 border-red-500">
@@ -43,14 +61,14 @@
     <!-- Username Input -->
     <div class="p-5 bg-white">
         <a href="#">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Chicken Republic NG</h5>
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><?php echo $name ?></h5>
         </a>   
     </div>
     <div class="p-5 mt-4  bg-white">
         <div class="flex items-center gap-4">
-          <img class="w-10 h-10 rounded-full border border-red-500 border-2" src="../assets/cr.jpeg" alt="">
+          <img class="w-10 h-10 rounded-full border border-red-500 border-2" src="./restaurants/<?php echo $image1 ?>" alt="">
           <div class="font-medium dark:text-white">
-              <div>Chicken Republic</div>
+              <div><?php echo $name ?></div>
           </div>
       </div>
       <div class="my-3">More dishes from this Restaurant</div>

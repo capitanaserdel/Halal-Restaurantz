@@ -1,3 +1,28 @@
+<?php
+session_start();
+include "../config.php";
+
+if (isset($_GET['food'])) {
+    $foodid = base64_decode($_GET['food']);
+
+    $product = "SELECT p.*, r.name AS restaurant_name FROM products p 
+                JOIN restaurants r ON p.restaurant_id = r.id 
+                WHERE p.id = '$foodid' ";
+        $result = $conn->query($product);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $food = $row["id"];
+                $res_id = $row["restaurant_id"];
+                $name = $row["name"];
+                $price = $row["price"];
+                $description = $row["descriptions"];
+                $image = $row["image"];
+                $restaurant_name = $row["restaurant_name"];
+        }
+    }
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +60,7 @@
 <div class="bg-grey-200 flex  mt-16 lg:w-full h-screen flex-col lg:flex-row justify-center  h-screen">
     <!-- Left: Image -->
 <div class="lg:w-1/2 h-screen ">
-  <img src="../assets/up.jpg" alt="Placeholder Image" class="object-fit w-full h-full">
+  <img src="./products/<?php echo $image ?>" alt="Placeholder Image" class="object-fit w-full h-full">
 </div>
 <!-- Right: Login Form -->
 <div class= " w-full border border-3 border-red-500">
@@ -43,16 +68,16 @@
     <!-- Username Input -->
     <div class="p-5 bg-white">
         <a href="#">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Danwake</h5>
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><?php echo $name ?></h5>
         </a>
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">&#8358;5,000</p>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">&#8358;<?php echo $price ?></p>
    
     </div>
     <div class="p-5 mt-4  bg-white">
         <div class="flex items-center gap-4">
           <img class="w-10 h-10 rounded-full border border-red-500 border-2" src="../assets/me.jpeg" alt="">
           <div class="font-medium dark:text-white">
-              <div>Tribe by Meenas</div>
+              <div><?php echo $restaurant_name ?></div>
           </div>
       </div>
       <div class="my-3">More dishes from this Restaurant</div>

@@ -1,3 +1,16 @@
+<?php
+session_start();
+include "../config.php";
+if(!isset($_SESSION['loggedin_admin'])){
+    header("location:./");
+?>
+<script type="text/javascript">
+    window.location.href="./";
+</script>
+<?php
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +23,19 @@
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
     <script src="//unpkg.com/alpinejs" defer></script>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:200,400&display=swap" rel="stylesheet">
+    <script src="../js/jquery.min.js"></script>
+    <script>
+        function previewFile(input) {
+            var file = input.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg1').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </head>
 <body>
 <nav class="fixed top-0 z-50 w-full bg-red-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -53,7 +79,7 @@
                 <a href="./manageads.php" class="flex items-center p-2 rounded-lg text-gray-900 dark:text-white bg-red-500 group">
                     <svg class="w-4 h-3 text-white transition duration-75 hover:text-red-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                         <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/></svg>
-                    <span class="ms-3 hover:text-gray-900 text-white">Product</span>
+                    <span class="ms-3 hover:text-gray-900 text-white">Manage Ads</span>
                 </a>
             </li>
             <!-- Logout Item -->
@@ -76,7 +102,7 @@
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    Create New Product
+                    Create New Ads
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -86,37 +112,32 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form class="p-4 md:p-5">
+            <form id="aform" method="post" enctype="multipart/form-data" class="p-4 md:p-5">
                 <div class="grid gap-4 mb-4 grid-cols-2">
                     <div class="col-span-2">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                         <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
                     </div>
-                    <div class="col-span-2 ">
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                        <input type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$2999" required="">
-                    </div>
                     <div class="col-span-2">
-                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-                        <textarea id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-red-500 focus:border-red-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" placeholder="Write product description here"></textarea>                    
+                        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ads Description</label>
+                        <textarea id="description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500" placeholder="Write product description here"></textarea>                    
                     </div>                     
-                    <div class="col-span-2 flex items-center justify-center w-full">
-                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-28 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                </svg>
-                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                            </div>
-                            <input id="dropzone-file" type="file" class="hidden" />
-                        </label>
+                    <div class="col-span-2 items-center justify-center w-full">
+                        <div class="flex items-center justify-center w-full">
+                            <label for="dropzone-file-1" class="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-md cursor-pointer">
+                                <h2 class="mx-3 text-gray-400">Click here to upload ads image</h2>
+                                <input id="dropzone-file-1" type="file" name="image1" onchange="previewFile(this);" class="hidden" accept="image/*" />
+                            </label>
+                        </div>
+                        <div class="flex flex-col w-full items-center">
+                            <img id="previewImg1" src="../user/image/up.jpg" alt="" class="rounded-full h-44 w-44 mt-4">
+                        </div>
                     </div> 
 
                 </div>
-                <button type="submit" class="text-white inline-flex items-center bg-red-500 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                <button type="submit" class="text-white inline-flex items-center bg-orange-500 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                    Add new product
+                    Add new Ads
                 </button>
             </form>
         </div>
@@ -129,71 +150,73 @@
             <div class="flex items-start justify-start">
                 <label class="flex flex-col items-start justify-start mt-12 border-2 border-red-300 border-dashed rounded-lg cursor-pointer bg-red-50 hover:bg-red-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                     <div class="flex flex-col items-center justify-center p-5">
-                    <img src="/assets/add.png" class="h-12" alt="">
+                    <img src="../assets/add.png" class="h-12" alt="">
                 </div>
                 </label>
             </div>
         </a>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 max-w-5xl ml-0 lg:ml-3">
-                <div
-                class="mx-3 mt-6 flex flex-col self-start rounded-lg bg-white text-surface shadow-secondary-1  dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0">
-                <a href="#!">
-                    <img
-                    class="rounded-lg h-44 w-full"
-                    src="../assets/cc.jpg"
-                    alt="Palm Springs Road" />
-                    <div class="pt-3 flex items-center justify-between">
-                        <p class="font-bold text-lg">Rice</p>
-                        <div class="inline-flex">
-                            <svg class="h-6 w-6 mx-5 fill-current text-red-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152L0 424c0 48.6 39.4 88 88 88l272 0c48.6 0 88-39.4 88-88l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 22.1-17.9 40-40 40L88 464c-22.1 0-40-17.9-40-40l0-272c0-22.1 17.9-40 40-40l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L88 64z"/></svg>
-                            <svg class="h-6 w-6 fill-current text-red-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-                            </div>
-                    </div>
-                    <p class="pt-1 text-red-500 font-bold">&#8358;2,000</p>
-                </a>
-                </div>
-            
-                <div
-                class="mx-3 mt-6 flex flex-col self-start rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0">
-                <a href="#!">
-                    <img
-                    class="rounded-lg h-44 w-full"
-                    src="../assets/cc.jpg"
-                    alt="Palm Springs Road" />
-                    <div class="pt-3 flex items-center justify-between">
-                        <p class="font-bold text-lg">Indomie</p>
-                        <div class="inline-flex">
+        <?php
+            $user = "SELECT * FROM ads ORDER BY ID DESC ";
+            $result2 = $conn->query($user);
+            if ($result2->num_rows > 0) {
+                while($row2 = $result2->fetch_assoc()) {
+                    $name = $row2["name"];
+                    $desc = $row2["descriptions"];
+                    $ads_id = $row2["id"];
+                    $image = $row2["img"];
+        ?>
+        <div class="mx-3 mt-6 flex flex-col self-start rounded-lg bg-white text-surface shadow-secondary-1  dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0">
+            <a href="#!">
+                <img class="rounded-lg h-44 w-full" src="./ads/<?php echo $image ?>" alt="Palm Springs Road" />
+                <div class="pt-3 flex items-center justify-between">
+                    <p class="font-bold text-lg"><?php echo $name ?></p>
+                    <div class="inline-flex">
                         <svg class="h-6 w-6 mx-5 fill-current text-red-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152L0 424c0 48.6 39.4 88 88 88l272 0c48.6 0 88-39.4 88-88l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 22.1-17.9 40-40 40L88 464c-22.1 0-40-17.9-40-40l0-272c0-22.1 17.9-40 40-40l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L88 64z"/></svg>
                         <svg class="h-6 w-6 fill-current text-red-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-                        </div>
                     </div>
-                    <p class="pt-1 text-red-500 font-bold">&#8358;2,000</p>
-                </a>
                 </div>
-            
-                <div
-                class="mx-3 mt-6 flex flex-col self-start rounded-lg bg-white text-surface shadow-secondary-1  dark:bg-surface-dark dark:text-white sm:shrink-0 sm:grow sm:basis-0">
-                <a href="#!">
-                    <img
-                    class="rounded-lg h-44 w-full"
-                    src="../assets/cc.jpg"
-                    alt="Palm Springs Road" />
-                    <div class="pt-3 flex items-center justify-between">
-                        <p class="font-bold text-lg">Fried Rice</p>
-                        <div class="inline-flex">
-                            <svg class="h-6 w-6 mx-5 fill-current text-red-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152L0 424c0 48.6 39.4 88 88 88l272 0c48.6 0 88-39.4 88-88l0-112c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 112c0 22.1-17.9 40-40 40L88 464c-22.1 0-40-17.9-40-40l0-272c0-22.1 17.9-40 40-40l112 0c13.3 0 24-10.7 24-24s-10.7-24-24-24L88 64z"/></svg>
-                            <svg class="h-6 w-6 fill-current text-red-500 hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-                            </div>
-                    </div>
-                    <p class="pt-1 text-red-500 font-bold">&#8358;2,000</p>
-                </a>
-                </div>
+                <!-- <p class="pt-1 text-red-500 font-bold">&#8358;2,000</p> -->
+            </a>
+        </div>
+        <?php
+                }
+            }
+        ?>
     </div>
 </div>
 </div>
- 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<script>
+$(document).ready(function () {
+  // submit add book
+  
+  $("#aform").submit(function(e) {
+    e.preventDefault();
+
+    $("#resp").html("");
+    var formData = new FormData(this);
+
+    $.ajax({
+        url: 'add_ads.php',
+        type: 'POST',
+        data: formData,
+        success: function (data) {
+            if(data == '?>yes'){
+                window.location.href = "manageads.php";
+            }else{
+           $("#resp").html(data);
+            }
+          // $("#aform")[0].reset();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+});
+
+});
+</script>
 </body>
 </html>
