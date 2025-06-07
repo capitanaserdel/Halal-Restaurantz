@@ -32,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     Invalid login credientials
                 </div> 
             </div>";
-			// echo 'Invalid login credentials!';
 		}
 	}
 }

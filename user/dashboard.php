@@ -124,15 +124,15 @@ $user = "SELECT * FROM restaurants WHERE email='$userid' ";
             </div>
             <div class="flex flex-col items-center justify-center h-28 rounded bg-orange-500 dark:bg-gray-800">
                 <p class="text-md text-white dark:text-gray-500">Numbers of Views</p>
-                <p class="text-3xl font-extrabold text-white dark:text-gray-500">48</p>
+                <p class="text-3xl font-extrabold text-white dark:text-gray-500">0</p>
             </div>
             <div class="flex flex-col items-center justify-center h-28 rounded bg-orange-500 dark:bg-gray-800">
                 <p class="text-md text-white dark:text-gray-500">Numbers of Views</p>
-                <p class="text-3xl font-extrabold text-white dark:text-gray-500">8,006</p>
+                <p class="text-3xl font-extrabold text-white dark:text-gray-500">0</p>
             </div>
             <div class="flex flex-col items-center justify-center h-28 rounded bg-orange-500 dark:bg-gray-800">
                 <p class="text-md text-white dark:text-gray-500">Numbers of Sales</p>
-                <p class="text-3xl font-extrabold text-white dark:text-gray-500">596</p>
+                <p class="text-3xl font-extrabold text-white dark:text-gray-500">0</p>
             </div>
         </div>
     </div>

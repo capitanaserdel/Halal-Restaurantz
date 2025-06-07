@@ -8,4 +8,3 @@ else{
     echo "Something went wrong, please try again!";
 }
 ?>
-?>

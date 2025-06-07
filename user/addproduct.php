@@ -9,6 +9,30 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     $description = $_POST['description'];
     $date=time();
 
+    $user = "SELECT * FROM restaurants WHERE id='$res_id' ";
+    $result2 = $conn->query($user);
+    if ($result2->num_rows > 0) {
+        while($row2 = $result2->fetch_assoc()) {
+            $numberOfUpload = $row2["number_of_upload"];
+        }
+    }
+
+    // Count the number of products uploaded by the restaurant
+    $countProductQuery = "SELECT COUNT(*) as count FROM products WHERE restaurant_id='$res_id'";
+    $countResult = $conn->query($countProductQuery);
+    $countProduct = 0; // Initialize countProduct
+    if ($countResult->num_rows > 0) {
+        $countRow = $countResult->fetch_assoc();
+        $countProduct = $countRow['count'];
+    }
+
+    // Check if the number of uploads exceeds the allowed limit
+    if ($numberOfUpload == $countProduct) {
+        // Handle the case where the limit is reached
+        echo "Upload limit reached.";
+        exit; // Stop further execution
+    }
+
     // Uploads files
     // name of the uploaded file
     $filename1 = $_FILES['image1']['name'];
@@ -31,6 +55,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         $insert=mysqli_query($conn,"INSERT INTO products (restaurant_id, name, price, descriptions, image, status, date)
                 VALUES('$res_id','$name','$price','$description','$filename1','0','$date')");
         if($insert == true){
+            $_SESSION['status'] = "New Product has been successfully uploaded";
+            $_SESSION['code'] = "success";
             echo "yes";
         }else{
             echo '

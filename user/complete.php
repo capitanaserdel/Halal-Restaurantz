@@ -179,7 +179,7 @@ $(document).ready(function () {
         type: 'POST',
         data: formData,
         success: function (data) {
-            if(data == '?>yes'){
+            if(data == 'yes'){
                 window.location.href = "dashboard.php";
             }else{
            $("#resp").html(data);

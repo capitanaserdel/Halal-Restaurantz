@@ -5,9 +5,11 @@ session_start();
 if($_SERVER["REQUEST_METHOD"]==="POST"){
     $name = $_SESSION['name'];
     $phone = $_SESSION['phone'];
-    $country = $_SESSION['country']; 
     $email = $_SESSION['email']; 
-    $reg_no = $_SESSION['reg_no'];
+    $country = $_SESSION['country'];
+    $state = $_SESSION['state'];
+    $city = $_SESSION['city'];
+    
     $date=time();
 
     // Uploads files
@@ -47,8 +49,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
     move_uploaded_file($file3, $destination3) && 
     move_uploaded_file($file4, $destination4)) {
 
-        $insert=mysqli_query($conn,"INSERT INTO restaurants (name, phone, country, email, reg_no, img1, img2, img3, img4, status, date)
-                VALUES('$name','$phone','$country','$email','$reg_no','$filename1','$filename2','$filename3','$filename4','0','$date')");
+        $insert=mysqli_query($conn,"INSERT INTO restaurants (name, phone, country, state, city, email, number_of_upload, img1, img2, img3, img4, status, date)
+                VALUES('$name','$phone','$country','$state','$city','$email','7','$filename1','$filename2','$filename3','$filename4','0','$date')");
         if($insert == true){
             $_SESSION['loggedin_restaurant'] = $email;
             echo "yes";

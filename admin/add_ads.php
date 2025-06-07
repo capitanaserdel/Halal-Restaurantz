@@ -29,6 +29,8 @@ if($_SERVER["REQUEST_METHOD"]==="POST"){
         $insert=mysqli_query($conn,"INSERT INTO ads (name, descriptions, img, status, date)
                 VALUES('$name','$description','$filename1','0','$date')");
         if($insert == true){
+            $_SESSION['status'] = "Ads has been successfully uploaded";
+            $_SESSION['code'] = "success";
             echo "yes";
         }else{
             echo '
